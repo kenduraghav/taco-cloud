@@ -3,8 +3,11 @@ package rk.examples.tacos.web;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +42,11 @@ public class TacoDesignController {
 	}
 	
 	@PostMapping
-	public String processDesign(Taco design) {
+	public String processDesign(@Valid Taco design, Errors error) {
+		if(error.hasErrors()) {
+			return "design";
+		}
+		
 		//TODO: Save to Database;
 		log.info("Processing {}", design);
 		return "redirect:/orders/current";
